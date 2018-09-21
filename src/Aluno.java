@@ -18,5 +18,15 @@ public class Aluno {
 		this.curso = curso;
 		this.morada = morada;
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "Aluno [numero=" + numero + ", nome=" + nome + ", ano=" + ano + ", curso=" + curso + ", morada=" + morada
+				+ ", quota=" + quota + "]";
+	}
+	
+	
 	
 }
