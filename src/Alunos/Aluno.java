@@ -1,3 +1,6 @@
+package Alunos;
+
+import quotas.Quotas;
 
 public class Aluno {
 	public int numero;
@@ -6,7 +9,7 @@ public class Aluno {
 	public String curso;
 	public String morada;
 	
-	public double quota;
+	public Quotas quotas;
 	
 	
 
@@ -17,14 +20,16 @@ public class Aluno {
 		this.ano = ano;
 		this.curso = curso;
 		this.morada = morada;
+		
+		this.quotas = new Quotas();
 	}
 
-
+	
 
 	@Override
 	public String toString() {
 		return "Aluno [numero=" + numero + ", nome=" + nome + ", ano=" + ano + ", curso=" + curso + ", morada=" + morada
-				+ ", quota=" + quota + "]";
+				+ ", quota=" + quotas + "]";
 	}
 	
 	

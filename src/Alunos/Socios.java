@@ -1,3 +1,4 @@
+package Alunos;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -10,18 +11,36 @@ public class Socios implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	public Map<Integer, Aluno> alunos;
+	public HashMap<Integer, Aluno> alunos;
 	
 	public Socios() {
 		alunos = new HashMap<Integer, Aluno>();
+	}
+	
+	public boolean existe(int num) {
+		return (alunos.containsKey(num));
 	}
 	
 	public void add(Aluno aluno) {
 		alunos.put(aluno.numero, aluno);
 	}
 	
-	public void remove(int numero) {
-		alunos.remove(numero);
+	public void pagarQuota(int aluno,int n, double valor) {
+		try {
+			Aluno tmp = alunos.get(aluno);
+			tmp.quotas.pay(n, valor);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public Aluno getAluno(int num) {
+		return alunos.get(num);
+	}
+	
+	public void remove(int num) {
+		alunos.remove(num);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -58,6 +77,6 @@ public class Socios implements Serializable{
 	}
 	
 	public HashMap<Integer, Aluno>getAlunos() {
-		return new HashMap<Integer, Aluno>(this.alunos);
+		return this.alunos;
 	}
 }

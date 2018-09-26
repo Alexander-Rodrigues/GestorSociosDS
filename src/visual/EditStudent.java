@@ -26,11 +26,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Observable;
-import java.util.Observer;
 import java.awt.Window.Type;
 
-public class NewStudent extends Observable{
+public class EditStudent {
 
 	private JFrame frame;
 	private JTextField numberTextField;
@@ -49,17 +47,16 @@ public class NewStudent extends Observable{
 	private String morada;
 	
 	private Facade facade;
-	
 
 	/**
 	 * Launch the application.
 	 */
-	public static void newStudent(Facade facade, Observer main) {
+	public static void newStudent(Facade facade, int numero, String nome, int ano, String curso, String morada) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					NewStudent window = new NewStudent(facade, main);
+					EditStudent window = new EditStudent(facade,numero,nome, ano, curso, morada);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -67,9 +64,13 @@ public class NewStudent extends Observable{
 			}
 		});
 	}
-	public NewStudent(Facade facade, Observer main) {
-		addObserver(main);
+	public EditStudent(Facade facade, int numero, String nome, int ano, String curso, String morada) {
 		this.facade = facade;
+		id = numero;
+		this.nome = nome;
+		this.ano = ano;
+		this.curso = curso;
+		this.morada = morada;
 		title = "New Student";
 		initialize();
 	}
@@ -100,7 +101,7 @@ public class NewStudent extends Observable{
 		gbc_lblNmnmnm.gridy = 1;
 		frame.getContentPane().add(lblNmnmnm, gbc_lblNmnmnm);
 		
-		numberTextField = new JTextField();
+		numberTextField = new JTextField(id);
 		GridBagConstraints gbc_numberTextField = new GridBagConstraints();
 		gbc_numberTextField.ipadx = 20;
 		gbc_numberTextField.fill = GridBagConstraints.HORIZONTAL;
@@ -118,7 +119,7 @@ public class NewStudent extends Observable{
 		gbc_lblNewLabel.gridy = 2;
 		frame.getContentPane().add(lblNewLabel, gbc_lblNewLabel);
 		
-		NameTextField = new JTextField();
+		NameTextField = new JTextField(nome);
 		GridBagConstraints gbc_NameTextField = new GridBagConstraints();
 		gbc_NameTextField.insets = new Insets(0, 0, 5, 5);
 		gbc_NameTextField.fill = GridBagConstraints.HORIZONTAL;
@@ -135,7 +136,7 @@ public class NewStudent extends Observable{
 		gbc_lblName.gridy = 3;
 		frame.getContentPane().add(lblName, gbc_lblName);
 		
-		YearTextField = new JTextField();
+		YearTextField = new JTextField(ano);
 		GridBagConstraints gbc_YearTextField = new GridBagConstraints();
 		gbc_YearTextField.insets = new Insets(0, 0, 5, 5);
 		gbc_YearTextField.fill = GridBagConstraints.HORIZONTAL;
@@ -152,7 +153,7 @@ public class NewStudent extends Observable{
 		gbc_lblYear.gridy = 4;
 		frame.getContentPane().add(lblYear, gbc_lblYear);
 		
-		CourseTextField = new JTextField();
+		CourseTextField = new JTextField(curso);
 		GridBagConstraints gbc_CourseTextField = new GridBagConstraints();
 		gbc_CourseTextField.insets = new Insets(0, 0, 5, 5);
 		gbc_CourseTextField.fill = GridBagConstraints.HORIZONTAL;
@@ -169,7 +170,7 @@ public class NewStudent extends Observable{
 		gbc_lblNewLabel_1.gridy = 5;
 		frame.getContentPane().add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
-		AdressTextField = new JTextField();
+		AdressTextField = new JTextField(morada);
 		GridBagConstraints gbc_AdressTextField = new GridBagConstraints();
 		gbc_AdressTextField.insets = new Insets(0, 0, 5, 5);
 		gbc_AdressTextField.fill = GridBagConstraints.HORIZONTAL;
@@ -196,13 +197,8 @@ public class NewStudent extends Observable{
 				if (nome == null || curso == null || morada == null) {
 					Warning.newWarning("Missed some fields");
 				}
-				else {
+				else 
 					facade.addAluno(id, nome, ano, curso, morada);
-					setChanged();
-					notifyObservers();
-					frame.dispose();
-				}
-				
 				}
 		});
 		GridBagConstraints gbc_btnDone = new GridBagConstraints();
