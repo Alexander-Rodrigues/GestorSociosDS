@@ -9,6 +9,10 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.Window.Type;
+import javax.swing.JTextArea;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import javax.swing.JFormattedTextField;
 
 public class Warning {
 
@@ -44,17 +48,15 @@ public class Warning {
 	 */
 	private void initialize() {
 		frmWarning = new JFrame();
-		frmWarning.setAlwaysOnTop(true);
-		frmWarning.setType(Type.UTILITY);
-		frmWarning.setTitle("Warning");
-		frmWarning.setFont(new Font("Ubuntu", Font.PLAIN, 12));
-		frmWarning.setBounds(100, 100, 408, 275);
-		frmWarning.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmWarning.setAutoRequestFocus(true);
+		frmWarning.setResizable(false);
+
+
+		frmWarning.setBounds(50, 50, 300, 150);
 		
-		JLabel text = new JLabel(warning);
-		text.setFont(new Font("Ubuntu", Font.BOLD, 18));
-		text.setHorizontalAlignment(SwingConstants.CENTER);
-		frmWarning.getContentPane().add(text, BorderLayout.CENTER);
+		JLabel lblNewLabel = new JLabel(warning);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		frmWarning.getContentPane().add(lblNewLabel, BorderLayout.CENTER);
 	}
 
 }

@@ -26,9 +26,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Observable;
+import java.util.Observer;
 import java.awt.Window.Type;
 
-public class EditStudent {
+public class EditStudent extends Observable{
 
 	private JFrame frame;
 	private JTextField numberTextField;
@@ -40,23 +42,26 @@ public class EditStudent {
 	
 	private String title;
 	
-	private int id;
+	private int newId;
+	private int oldId;
 	private String nome;
 	private int ano;
 	private String curso;
 	private String morada;
 	
 	private Facade facade;
+	
 
 	/**
 	 * Launch the application.
 	 */
-	public static void newStudent(Facade facade, int numero, String nome, int ano, String curso, String morada) {
+	
+	public static void newEditStudent(Facade facade, Observer main, int id, String nome, int ano, String curso, String morada) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					EditStudent window = new EditStudent(facade,numero,nome, ano, curso, morada);
+					EditStudent window = new EditStudent(facade, main, id, nome, ano, curso, morada);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -64,14 +69,15 @@ public class EditStudent {
 			}
 		});
 	}
-	public EditStudent(Facade facade, int numero, String nome, int ano, String curso, String morada) {
-		this.facade = facade;
-		id = numero;
+	public EditStudent(Facade facade, Observer main, int id, String nome, int ano, String curso, String morada) {
+		addObserver(main);
+		this.oldId = id;
 		this.nome = nome;
 		this.ano = ano;
 		this.curso = curso;
 		this.morada = morada;
-		title = "New Student";
+		this.facade = facade;
+		title = "Edit " + nome + "'s name";
 		initialize();
 	}
 
@@ -101,7 +107,7 @@ public class EditStudent {
 		gbc_lblNmnmnm.gridy = 1;
 		frame.getContentPane().add(lblNmnmnm, gbc_lblNmnmnm);
 		
-		numberTextField = new JTextField(id);
+		numberTextField = new JTextField(String.valueOf(oldId));
 		GridBagConstraints gbc_numberTextField = new GridBagConstraints();
 		gbc_numberTextField.ipadx = 20;
 		gbc_numberTextField.fill = GridBagConstraints.HORIZONTAL;
@@ -136,7 +142,7 @@ public class EditStudent {
 		gbc_lblName.gridy = 3;
 		frame.getContentPane().add(lblName, gbc_lblName);
 		
-		YearTextField = new JTextField(ano);
+		YearTextField = new JTextField(String.valueOf(ano));
 		GridBagConstraints gbc_YearTextField = new GridBagConstraints();
 		gbc_YearTextField.insets = new Insets(0, 0, 5, 5);
 		gbc_YearTextField.fill = GridBagConstraints.HORIZONTAL;
@@ -184,7 +190,7 @@ public class EditStudent {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				try {
-					id = Integer.valueOf(numberTextField.getText());
+					newId = Integer.valueOf(numberTextField.getText());
 					nome = NameTextField.getText();
 					ano = Integer.valueOf(YearTextField.getText());
 					curso = CourseTextField.getText();
@@ -197,9 +203,14 @@ public class EditStudent {
 				if (nome == null || curso == null || morada == null) {
 					Warning.newWarning("Missed some fields");
 				}
-				else 
-					facade.addAluno(id, nome, ano, curso, morada);
+				else {
+					facade.edit(oldId, newId, nome, ano, curso, morada);
+					setChanged();
+					notifyObservers();
+					frame.dispose();
 				}
+				
+			}
 		});
 		GridBagConstraints gbc_btnDone = new GridBagConstraints();
 		gbc_btnDone.insets = new Insets(0, 0, 0, 5);

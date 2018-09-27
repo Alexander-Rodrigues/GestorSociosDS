@@ -1,8 +1,12 @@
 package Alunos;
 
+import java.io.Serializable;
+
 import quotas.Quotas;
 
-public class Aluno {
+public class Aluno implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	public int numero;
 	public String nome;
 	public int ano;

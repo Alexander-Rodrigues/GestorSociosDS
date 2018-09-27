@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import quotas.Quotas;
+
 public class Socios implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -22,7 +24,21 @@ public class Socios implements Serializable{
 	}
 	
 	public void add(Aluno aluno) {
-		alunos.put(aluno.numero, aluno);
+		if (!alunos.containsKey(aluno.numero)) alunos.put(aluno.numero, aluno);
+	}
+	
+	public void edit(int oldId, int newId, String nome, int ano, String curso, String morada) {
+		if (!alunos.containsKey(oldId)) {
+			//doesnt exist
+		}
+		else if (alunos.containsKey(newId)) {
+			//ja existe alguem com este id no sistema, NO DUPLICATES
+		}
+		Aluno nAl = new Aluno(newId, nome, ano, curso, morada);
+		Aluno oAl = alunos.get(oldId);
+		nAl.quotas = new Quotas();//oAl.quotas;
+		alunos.remove(oldId);
+		alunos.put(newId, nAl);
 	}
 	
 	public void pagarQuota(int aluno,int n, double valor) {

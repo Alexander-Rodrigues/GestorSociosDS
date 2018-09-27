@@ -1,8 +1,14 @@
 package quotas;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class Quotas {
+public class Quotas implements Iterable<Quota>, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	ArrayList<Quota> list;
 	
 	public double balance() {
@@ -11,6 +17,14 @@ public class Quotas {
 			r += q.value;
 		}
 		return r;
+	}
+	
+	public int size() {
+		return list.size();
+	}
+	
+	public void add(double val) {
+		list.add(new Quota(val));
 	}
 	
 	public Quotas() {
@@ -34,12 +48,24 @@ public class Quotas {
 	}
 	
 	public void pay(int n, double val) {
-		Quota tmp = list.get(n);
-		tmp.pay(val);
-		if (tmp.value.equals(new Double(0))) {
-			list.remove(n);
+		try {
+			Quota tmp = list.get(n);
+			tmp.pay(val);
+			if (tmp.value.equals(new Double(0))) {
+				list.remove(n);
+			}
+		}
+		catch (Exception e) {
+			
 		}
 		
 	}
+
+	@Override
+	public Iterator<Quota> iterator() {
+		// TODO Auto-generated method stub
+		return list.iterator();
+	}
+
 	
 }

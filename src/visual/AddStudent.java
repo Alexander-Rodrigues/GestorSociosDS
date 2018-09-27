@@ -30,7 +30,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.awt.Window.Type;
 
-public class NewStudent extends Observable{
+public class AddStudent extends Observable{
 
 	private JFrame frame;
 	private JTextField numberTextField;
@@ -59,7 +59,7 @@ public class NewStudent extends Observable{
 			@Override
 			public void run() {
 				try {
-					NewStudent window = new NewStudent(facade, main);
+					AddStudent window = new AddStudent(facade, main);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -67,7 +67,7 @@ public class NewStudent extends Observable{
 			}
 		});
 	}
-	public NewStudent(Facade facade, Observer main) {
+	public AddStudent(Facade facade, Observer main) {
 		addObserver(main);
 		this.facade = facade;
 		title = "New Student";

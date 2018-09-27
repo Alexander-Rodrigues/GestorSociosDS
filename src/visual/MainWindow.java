@@ -15,11 +15,15 @@ import java.awt.Insets;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import Alunos.Aluno;
 import Alunos.Facade;
 import Alunos.SociosModelList;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -32,10 +36,9 @@ import javax.swing.AbstractListModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class MainWindow implements Observer{
+public class MainWindow implements Observer {
 
 	private JFrame frmStudentManager;
-	private JTextField txtAmount;
 	private JButton btnPay;
 	private JButton btnRemove;
 	
@@ -64,8 +67,9 @@ public class MainWindow implements Observer{
 	/**
 	 * Create the application.
 	 */
-	public MainWindow() {
-		facade = new Facade();
+	public MainWindow(){
+		facade = new Facade("save");
+		facade.addAluno(69, "Danny Deleto", 3, "???", "???");
 		table = new StudentTable(facade.getAlunos());
 		initialize();
 	}
@@ -77,12 +81,30 @@ public class MainWindow implements Observer{
 		
 		
 		frmStudentManager = new JFrame();
+		frmStudentManager.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("keke");
+				facade.socios.save("save");
+			}
+			
+			public void windowClosing(WindowEvent e) {
+				facade.socios.save("save");
+			}
+		});
+		frmStudentManager.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		frmStudentManager.setResizable(false);
 		frmStudentManager.setFont(new Font("Ubuntu Mono", Font.PLAIN, 12));
 		frmStudentManager.setTitle("Student Manager");
 		frmStudentManager.setBounds(100, 100, 601, 300);
-		frmStudentManager.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		//frmStudentManager.pack();
+		frmStudentManager.setLocationRelativeTo(null);
+		frmStudentManager.setVisible(true);
+		
+		//frmStudentManager.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 56, 124, 281, 0, 0};
 		gridBagLayout.rowHeights = new int[]{30, 50, 50, 50, 50, 0, 0};
@@ -96,7 +118,7 @@ public class MainWindow implements Observer{
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				NewStudent.newStudent(facade, tmp);
+				AddStudent.newStudent(facade, tmp);
 				
 			}
 		});
@@ -136,11 +158,22 @@ public class MainWindow implements Observer{
 		
 		scrollPane.setViewportView(table);
 		
+		
+		
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				//NewStudent.newStudent(facade);
+				try {
+					int id = getSelectedId();
+					Aluno al = facade.getAluno(id);
+					EditStudent.newEditStudent(facade, tmp, al.numero, al.nome, al.ano, al.curso, al.morada);
+				}
+				catch (Exception e) {
+					
+				}
+				//
 			}
 		});
 		GridBagConstraints gbc_btnEdit = new GridBagConstraints();
@@ -152,31 +185,36 @@ public class MainWindow implements Observer{
 		frmStudentManager.getContentPane().add(btnEdit, gbc_btnEdit);
 		
 		btnPay = new JButton("Pay");
+		btnPay.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					Payment.newPaymentWindow(facade.getAluno(getSelectedId()).quotas);
+				}
+				catch (Exception e) {
+					
+				}
+			}
+		});
 		GridBagConstraints gbc_btnPay = new GridBagConstraints();
-		gbc_btnPay.fill = GridBagConstraints.VERTICAL;
+		gbc_btnPay.gridwidth = 2;
+		gbc_btnPay.fill = GridBagConstraints.BOTH;
 		gbc_btnPay.insets = new Insets(0, 0, 5, 5);
 		gbc_btnPay.gridx = 1;
 		gbc_btnPay.gridy = 3;
 		frmStudentManager.getContentPane().add(btnPay, gbc_btnPay);
 		
-		txtAmount = new JTextField();
-		txtAmount.setHorizontalAlignment(SwingConstants.CENTER);
-		txtAmount.setFont(new Font("Ubuntu", Font.PLAIN, 28));
-		txtAmount.setText("");
-		GridBagConstraints gbc_txtAmount = new GridBagConstraints();
-		gbc_txtAmount.insets = new Insets(0, 0, 5, 5);
-		gbc_txtAmount.fill = GridBagConstraints.BOTH;
-		gbc_txtAmount.gridx = 2;
-		gbc_txtAmount.gridy = 3;
-		frmStudentManager.getContentPane().add(txtAmount, gbc_txtAmount);
-		txtAmount.setColumns(10);
-		
 		btnRemove = new JButton("Remove");
 		btnRemove.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//table.update();
-				update(null,null);
+				try {
+					facade.socios.remove(getSelectedId());
+					table.update();
+				}
+				catch (Exception e) {
+					
+				}
 			}
 		});
 		GridBagConstraints gbc_btnRemove = new GridBagConstraints();
@@ -188,9 +226,22 @@ public class MainWindow implements Observer{
 		frmStudentManager.getContentPane().add(btnRemove, gbc_btnRemove);
 	}
 
+	public Integer getSelectedId() throws NullPointerException{
+		String tmp = null;
+		try {
+			tmp = table.getModel().getValueAt(table.getSelectedRow(), 0).toString();
+		}
+		catch (Exception e) {
+			throw new NullPointerException();
+		}
+		return Integer.valueOf(tmp);
+	}
+	
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		table.update();
 	}
+
+	
 
 }

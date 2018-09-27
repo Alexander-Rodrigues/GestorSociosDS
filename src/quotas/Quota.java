@@ -1,16 +1,21 @@
 package quotas;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Date;
 
-public class Quota {
+public class Quota implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public Date date;
 	public Double value;
 	
-	public Quota() {
+	public Quota(double val) {
 		date = new Date();
-		value = new Double(0);
+		value = new Double(val);
 	}
 	
 	public void pay(double val) {
