@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import java.awt.GridBagLayout;
-import javax.swing.JTabbedPane;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
@@ -13,12 +12,12 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 import quotas.Quotas;
 
 import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
-import javax.swing.JTable;
 
 public class Payment {
 
@@ -33,6 +32,7 @@ public class Payment {
 	 */
 	public static void newPaymentWindow(Quotas quotas) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					Payment window = new Payment(quotas);
@@ -59,7 +59,7 @@ public class Payment {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{30, 136, 93, 89, 0, 30, 0};
 		gridBagLayout.rowHeights = new int[]{30, 0, 0, 30, 0};

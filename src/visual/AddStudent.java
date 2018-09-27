@@ -2,28 +2,16 @@ package visual;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
-import java.awt.CardLayout;
-import java.awt.FlowLayout;
 import javax.swing.JTextField;
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SpringLayout;
 import javax.swing.JButton;
-import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
-import Alunos.Aluno;
 import Alunos.Facade;
 
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Observable;
@@ -39,8 +27,6 @@ public class AddStudent extends Observable{
 	private JTextField CourseTextField;
 	private JTextField AdressTextField;
 	private JButton btnDone;
-	
-	private String title;
 	
 	private int id;
 	private String nome;
@@ -70,7 +56,6 @@ public class AddStudent extends Observable{
 	public AddStudent(Facade facade, Observer main) {
 		addObserver(main);
 		this.facade = facade;
-		title = "New Student";
 		initialize();
 	}
 
@@ -80,11 +65,11 @@ public class AddStudent extends Observable{
 	private void initialize() {
 		frame = new JFrame();
 
-		frame.setTitle("hello");
+		frame.setTitle("New Student");
 		frame.setType(Type.NORMAL);
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 475, 221);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{40, 0, 0, 315, 35, 0};
 		gridBagLayout.rowHeights = new int[]{40, 0, 0, 0, 0, 0, 0, 0, 0};

@@ -27,6 +27,7 @@ public class Quota implements Serializable{
 
 class sortByDateAsc implements Comparator<Quota> {
 	
+	@Override
 	public int compare(Quota a, Quota b) {
 		int r = a.date.compareTo(b.date);
 		if ( r == 0) {
@@ -39,6 +40,7 @@ class sortByDateAsc implements Comparator<Quota> {
 
 class sortByDateDesc implements Comparator<Quota> {
 	
+	@Override
 	public int compare(Quota a, Quota b) {
 		int r = a.date.compareTo(b.date);
 		if ( r == 0) {
@@ -51,6 +53,7 @@ class sortByDateDesc implements Comparator<Quota> {
 
 class sortByValueAsc implements Comparator<Quota> {
 	
+	@Override
 	public int compare(Quota a, Quota b) {
 		int r = a.value.compareTo(b.value);
 		if ( r == 0) {
@@ -63,6 +66,7 @@ class sortByValueAsc implements Comparator<Quota> {
 
 class sortByValueDesc implements Comparator<Quota> {
 	
+	@Override
 	public int compare(Quota a, Quota b) {
 		int r = a.value.compareTo(b.value);
 		if ( r == 0) {

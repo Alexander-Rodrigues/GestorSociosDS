@@ -3,16 +3,9 @@ package visual;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JTextPane;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import java.awt.Font;
-import java.awt.Window.Type;
-import javax.swing.JTextArea;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import javax.swing.JFormattedTextField;
 
 public class Warning {
 
@@ -24,6 +17,7 @@ public class Warning {
 	 */
 	public static void newWarning(String message) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					Warning window = new Warning(message);

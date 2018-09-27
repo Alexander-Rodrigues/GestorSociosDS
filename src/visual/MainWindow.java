@@ -3,38 +3,23 @@ package visual;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Font;
-import javax.swing.JList;
 import java.awt.Insets;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
 import Alunos.Aluno;
 import Alunos.Facade;
-import Alunos.SociosModelList;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
-import javax.swing.JScrollBar;
-import javax.swing.AbstractListModel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 public class MainWindow implements Observer {
 
@@ -53,6 +38,7 @@ public class MainWindow implements Observer {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					MainWindow window = new MainWindow();
@@ -89,6 +75,7 @@ public class MainWindow implements Observer {
 				facade.socios.save("save");
 			}
 			
+			@Override
 			public void windowClosing(WindowEvent e) {
 				facade.socios.save("save");
 			}
