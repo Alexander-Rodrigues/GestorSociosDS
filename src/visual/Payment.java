@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -19,7 +21,7 @@ import quotas.Quotas;
 import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
 
-public class Payment {
+public class Payment extends Observable{
 
 	private JFrame frame;
 	private JTextField textField;
@@ -30,12 +32,12 @@ public class Payment {
 	/**
 	 * Launch the application.
 	 */
-	public static void newPaymentWindow(Quotas quotas) {
+	public static void newPaymentWindow(Quotas quotas, Observer obs) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					Payment window = new Payment(quotas);
+					Payment window = new Payment(quotas, obs);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +49,8 @@ public class Payment {
 	/**
 	 * Create the application.
 	 */
-	public Payment(Quotas quotas) {
+	public Payment(Quotas quotas, Observer obs) {
+		addObserver(obs);
 		table = new PaymentTable(quotas);
 		//this.quotas = quotas;
 		initialize();
@@ -98,6 +101,9 @@ public class Payment {
 			public void mouseClicked(MouseEvent arg0) {
 				try {
 					table.add(Double.valueOf(textField.getText()));
+					table.update();
+					setChanged();
+					notifyObservers();
 				}
 				catch (NumberFormatException e) {
 					Warning.newWarning(e.getLocalizedMessage());
@@ -120,6 +126,8 @@ public class Payment {
 					int n = table.getSelectedRow();
 					table.pay(n, Double.valueOf(textField.getText()));
 					table.update();
+					setChanged();
+					notifyObservers();
 				}
 				catch (NumberFormatException e) {
 					Warning.newWarning(e.getLocalizedMessage());
@@ -135,6 +143,14 @@ public class Payment {
 		frame.getContentPane().add(btnPay, gbc_btnPay);
 		
 		JButton btnDone = new JButton("Done");
+		btnDone.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				frame.dispose();
+				setChanged();
+				notifyObservers();
+			}
+		});
 		GridBagConstraints gbc_btnDone = new GridBagConstraints();
 		gbc_btnDone.fill = GridBagConstraints.BOTH;
 		gbc_btnDone.insets = new Insets(0, 0, 5, 5);

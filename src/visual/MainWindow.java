@@ -176,7 +176,7 @@ public class MainWindow implements Observer {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				try {
-					Payment.newPaymentWindow(facade.getAluno(getSelectedId()).quotas);
+					Payment.newPaymentWindow(facade.getAluno(getSelectedId()).quotas, tmp);
 				}
 				catch (Exception e) {
 					
@@ -227,6 +227,7 @@ public class MainWindow implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		table.update();
+		facade.socios.save("save");
 	}
 
 	

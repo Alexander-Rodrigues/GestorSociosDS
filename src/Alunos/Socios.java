@@ -34,7 +34,7 @@ public class Socios implements Serializable{
 		}
 		Aluno nAl = new Aluno(newId, nome, ano, curso, morada);
 		Aluno oAl = alunos.get(oldId);
-		nAl.quotas = new Quotas();//oAl.quotas;
+		nAl.quotas = oAl.quotas;
 		alunos.remove(oldId);
 		alunos.put(newId, nAl);
 	}
